@@ -3,7 +3,7 @@ import Image from "next/image";
 import Layout from "../components/Layout/Layout";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function RadarChart() {
   return (
    <Layout>
     
