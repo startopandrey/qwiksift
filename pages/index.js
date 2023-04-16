@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Layout from "../components/Layout/Layout";
-import styles from "../styles/Home.module.css";
+
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import NextLink from "next/link";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
