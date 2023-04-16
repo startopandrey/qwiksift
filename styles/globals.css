@@ -19,13 +19,13 @@ a {
   opacity: 0;
   display: none !important;
 }
-.apexcharts-text{
+/* .apexcharts-text{
   fill: #fff;
   padding: 5px;
   background: #000 !important;
 
-}
+}*/
 .apexcharts-tooltip{
-  fill: #000;
-  color: #000;
-}
+  fill: #777777;
+  color: #828282;
+} 

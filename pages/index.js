@@ -5,15 +5,17 @@ import {
   Grid,
   IconButton,
   ListItem,
+  Paper,
+  Switch,
   Tooltip,
   Typography,
 } from "@mui/material";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import Layout from "../components/Layout/Layout";
 
+import { useEffect, useState } from "react";
+import Layout from "../components/Layout/Layout";
+import { useRouter } from "next/router";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 import NextLink from "next/link";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -30,6 +32,13 @@ import TagCloud from "react-tag-cloud";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export default function Home() {
+  const router = useRouter();
+  const [selectedTheme, setSelectedTheme] = useState();
+  useEffect(() => {
+    const selectedTheme = localStorage.getItem("selectedTheme");
+    setSelectedTheme(selectedTheme);
+  }, []);
+
   const [users, setUsers] = useState([
     {
       id: 0,
@@ -110,7 +119,14 @@ export default function Home() {
           disableRipple
           sx={{
             borderRadius: 0,
-            color: active ? "primary.main" : "neutral.800",
+            color: active
+              ? selectedTheme == "dark"
+                ? "primary.main"
+                : "#fff"
+              : selectedTheme == "dark"
+              ? "rgba(0, 0, 0, 0.4)"
+              : " rgba(0, 0, 0, 0.4)",
+
             fontWeight: "fontWeightBold",
             justifyContent: "flex-start",
             px: 3,
@@ -119,7 +135,8 @@ export default function Home() {
             width: "100%",
             py: 1,
 
-            backgroundColor: active && "#232966",
+            backgroundColor:
+              active && (selectedTheme == "dark" ? "#232966" : "#fff"),
             outlineLeft: active && `4px solid #FD51AE;`,
             boxSizing: active && "border-box",
             boxShadow: active && `-5px 0px 0px 0px #FD51AE;`,
@@ -127,7 +144,7 @@ export default function Home() {
               color: active ? "primary.main" : "neutral.800",
             },
             "&:hover": {
-              backgroundColor: "#232966",
+              backgroundColor: selectedTheme == "dark" ? "#232966" : "#fff",
               outlineLeft: `4px solid #FD51AE;`,
               boxSizing: "border-box",
               boxShadow: `-5px 0px 0px 0px #FD51AE;`,
@@ -157,7 +174,13 @@ export default function Home() {
             />
             <Typography
               sx={{
-                color: "text.primary",
+                color: active
+                  ? selectedTheme == "dark"
+                    ? "text.primary"
+                    : "#000"
+                  : selectedTheme == "dark"
+                  ? "text.primary"
+                  : " rgba(0, 0, 0, 0.4)",
                 fontFamily: "Lato",
                 fontWeight: active ? 900 : 700,
               }}
@@ -198,8 +221,10 @@ export default function Home() {
             width: "300px",
             borderRadius: "10px",
             background:
-              "linear-gradient(162.34deg, #161A42 22.61%, rgba(22, 26, 66, 0) 118.29%)",
-            border: " 1px solid #161A42",
+              selectedTheme == "dark"
+                ? "linear-gradient(162.34deg, #161A42 22.61%, rgba(22, 26, 66, 0) 118.29%)"
+                : "#F4FBFC",
+            border: selectedTheme == "dark" ? "1px solid #161A42" : "none",
             py: 3,
             display: "flex",
             flexDirection: "column",
@@ -309,6 +334,25 @@ export default function Home() {
             <ArrowForwardIosIcon
               sx={{ width: 20, height: 20 }}
             ></ArrowForwardIosIcon>
+            <Switch
+              checked={selectedTheme == "light" ? true : false}
+              onChange={() => {
+                if (selectedTheme == "dark") {
+                  localStorage.setItem("selectedTheme", "light");
+                  router.reload(window.location.pathname);
+                } else {
+                  localStorage.setItem("selectedTheme", "dark");
+                  router.reload(window.location.pathname);
+                }
+                // localStorage.setItem(
+                //   "selectedTheme",
+                //   selectedTheme == "dark" ? "dark" : "light"
+                // );
+
+                // console.log(localStorage.getItem("selectedTheme"));
+              }}
+              inputProps={{ "aria-label": "controlled" }}
+            />
           </Box>
         </Box>
       </Box>
@@ -319,9 +363,9 @@ export default function Home() {
       position: "relative",
       display: "flex",
       borderRadius: 0,
-      borderTopRightRadius: "10px",
-      borderBottomRightRadius: "10px",
-      background: "#161A42",
+      borderTopRightRadius: "8px",
+      borderBottomRightRadius: "8px",
+      background: selectedTheme == "dark" ? "#161A42" : "#fff",
       margin: "2px",
       "&:hover": {
         backgroundColor: "rgba(#161A42, 0.15)",
@@ -344,6 +388,7 @@ export default function Home() {
 
     const StyledInputBase = styled(InputBase)(({ theme }) => ({
       color: "inherit",
+      fontFamily: "Lato",
       borderRadius: 0,
       width: "100%",
       "& .MuiInputBase-input": {
@@ -427,6 +472,7 @@ export default function Home() {
             //   borderWidth: 2,
             //   borderRadius: 8,
             //   borderImageSlice: 1,
+            
             "&::before": {
               content: '""',
               position: "absolute",
@@ -449,12 +495,12 @@ export default function Home() {
               value={category}
               sx={{
                 height: "100%",
-                background: "#283081",
+                background: selectedTheme == "dark" ? "#283081" : "#E7E7E7",
                 width: "100%",
                 margin: "2px",
-                borderTopLeftRadius: 10,
-
-                borderBottomLeftRadius: 10,
+                borderTopLeftRadius: 8,
+                fontFamily: "Lato",
+                borderBottomLeftRadius: 8,
                 borderTopRightRadius: 0,
                 borderBottomRightRadius: 0,
               }}
@@ -488,6 +534,7 @@ export default function Home() {
         background: "linear-gradient(45deg,#FF51AC, #A05CE6, #1968FA, #D952CA)",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
+        
       },
       medium: {
         fontSize: 20,
@@ -509,7 +556,7 @@ export default function Home() {
       },
     };
     return (
-      <Box sx={{}}>
+      <Box sx={{         width: "50%"}}>
         <Box
           sx={{
             width: "100%",
@@ -526,6 +573,7 @@ export default function Home() {
                 background: "#283081",
                 textTransform: "capitalize",
                 borderRadius: "10px",
+                fontFamily: "Lato",
               }}
               size="large"
               variant="contained"
@@ -539,6 +587,7 @@ export default function Home() {
                 opacity: 0.6,
                 textTransform: "capitalize",
                 borderRadius: "10px",
+                fontFamily: "Lato",
               }}
             >
               Show Filters
@@ -564,7 +613,7 @@ export default function Home() {
             spacing={2}
           >
             <Grid item lg="6">
-              <Box
+              <Paper
                 sx={{
                   width: "100%",
                   height: 350,
@@ -572,6 +621,7 @@ export default function Home() {
                   background: "theme.light",
                   px: 3,
                   py: 2,
+                  borderRadius: "10px",
                   "&::before": {
                     content: '""',
                     position: "absolute",
@@ -608,7 +658,7 @@ export default function Home() {
                     },
 
                     chart: {
-                      foreColor: "#000",
+                      foreColor: selectedTheme == "dark" ? "#fff" :  "#000",
                       // fontFamily: "IBM Plex Sans, sans-serif",
                       offsetX: -50,
                       offsetY: -20,
@@ -636,10 +686,8 @@ export default function Home() {
                       labels: {
                         show: true,
                         style: {
-                          colors: ["#000"],
+                          colors: [selectedTheme == "dark" ? "#979797" :  "#979797"],
                           fontSize: "10px",
-
-              
                         },
                       },
                     },
@@ -654,7 +702,7 @@ export default function Home() {
                         fontSize: "12px",
                         fontWeight: "normal",
                         fontFamily: undefined,
-                        color: "#9699a2",
+                        color: selectedTheme == "dark" ? "#fff" :  "#000",
                       },
                     },
                   }}
@@ -701,17 +749,18 @@ export default function Home() {
                 type="radar"
                 height={350}
               /> */}
-              </Box>
+              </Paper>
             </Grid>
             <Grid item xs="6">
               {" "}
-              <Box
+              <Paper
                 sx={{
                   width: "100%",
                   height: 350,
                   position: "relative",
                   px: 3,
                   py: 2,
+                  borderRadius: "10px",
                   "&::before": {
                     content: '""',
                     position: "absolute",
@@ -764,17 +813,18 @@ export default function Home() {
                   <div style={textSizes.medium}>GPC</div>
                   <div style={textSizes.medium}>IOT</div>
                 </TagCloud>
-              </Box>
+              </Paper>
             </Grid>
             <Grid item xs="6">
               {" "}
-              <Box
+              <Paper
                 sx={{
                   width: "100%",
                   height: 350,
                   position: "relative",
                   px: 3,
                   py: 2,
+                  borderRadius: "10px",
                   "&::before": {
                     content: '""',
                     position: "absolute",
@@ -828,11 +878,11 @@ export default function Home() {
                     height={300}
                   />
                 </Box> */}
-              </Box>
+              </Paper>
             </Grid>
             <Grid item xs="6">
               {" "}
-              <Box
+              <Paper
                 sx={{
                   width: "100%",
                   height: 350,
@@ -840,6 +890,7 @@ export default function Home() {
                   px: 3,
                   py: 2,
                   display: "flex",
+                  borderRadius: "10px",
                   justifyContent: "center",
                   "&::before": {
                     content: '""',
@@ -879,7 +930,7 @@ export default function Home() {
                     alt="img"
                   />
                 </Box>
-              </Box>
+              </Paper>
             </Grid>
           </Grid>
         </Box>
@@ -896,7 +947,8 @@ export default function Home() {
           px: 3,
           py: 2,
           mr: 4,
-          background: "url('/bg.png')",
+          background: selectedTheme ? "" : "url('/bg.png')",
+
           "&::before": {
             content: '""',
             position: "absolute",
@@ -909,7 +961,6 @@ export default function Home() {
               "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             WebkitMaskComposite: "xor",
             MaskComposite: "exclude",
-         
           },
         }}
       >
@@ -959,16 +1010,18 @@ export default function Home() {
                 dataLabels: {
                   show: true,
                   name: {
+                    display: "none",
                     offsetY: -10,
                     show: true,
-                    color: "#888",
+                    color: selectedTheme != "dark" ? "#000" : "#fff",
                     fontSize: "17px",
                   },
                   value: {
                     formatter: function (val) {
-                      return parseInt(val);
+                      return` ${parseInt(val)}%`;
                     },
-                    color: "#111",
+                    fontWeight: 700,
+                    color: selectedTheme != "dark" ? "#000" : "#fff",
                     fontSize: "36px",
                     show: true,
                   },
@@ -991,7 +1044,7 @@ export default function Home() {
             stroke: {
               lineCap: "round",
             },
-            labels: ["Percent"],
+            labels: ["Match"],
           }}
           series={[85]}
           type="radialBar"
@@ -1052,8 +1105,8 @@ export default function Home() {
                   width: "100%",
                 }}
                 alt="img"
-           width={40}
-           height={20}
+                width={40}
+                height={20}
               ></Image>
             </Box>
             <Typography
@@ -1096,7 +1149,7 @@ export default function Home() {
             </Typography>
           </Box>
           <Box sx={{ display: "flex" }}>
-          <Box sx={{ width: 20, height: 20, position: "relative" }}>
+            <Box sx={{ width: 20, height: 20, position: "relative" }}>
               <Image
                 src="/icons/in.png"
                 style={{
@@ -1138,9 +1191,9 @@ export default function Home() {
           >
             RECENT ROLES
           </Typography>
-          <Box
+          <Paper
             sx={{
-              background: "rgba(22, 26, 66, 0.7)",
+              // background: "rgba(22, 26, 66, 0.7)",
               display: "flex",
               flexDirection: "column",
               borderRadius: "10px",
@@ -1198,9 +1251,9 @@ export default function Home() {
                 ML DevOps
               </Typography>
             </Box>
-          </Box>
+          </Paper>
         </Box>
-        <Box>
+        <Paper>
           {" "}
           <Typography
             sx={{
@@ -1216,9 +1269,9 @@ export default function Home() {
           >
             QUALIFICATIONS
           </Typography>
-          <Box
+          <Paper
             sx={{
-              background: "rgba(22, 26, 66, 0.7)",
+              // background: "rgba(22, 26, 66, 0.7)",
               display: "flex",
               flexDirection: "column",
               borderRadius: "10px",
@@ -1276,8 +1329,8 @@ export default function Home() {
                 AWS Engineer
               </Typography>
             </Box>
-          </Box>
-        </Box>
+          </Paper>
+        </Paper>
         <Box>
           {" "}
           <Typography
@@ -1294,9 +1347,9 @@ export default function Home() {
           >
             Right to work
           </Typography>
-          <Box
+          <Paper
             sx={{
-              background: "rgba(22, 26, 66, 0.7)",
+              // background: "rgba(22, 26, 66, 0.7)",
               display: "flex",
               flexDirection: "column",
               borderRadius: "10px",
@@ -1354,7 +1407,7 @@ export default function Home() {
                 ML DevOps
               </Typography>
             </Box>
-          </Box>
+          </Paper>
         </Box>
       </Box>
     );

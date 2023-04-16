@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 // import Header from "../Header/Header";
 // import Footer from "../Footer/Footer";
 import Head from "next/head";
@@ -8,6 +8,16 @@ import { createTheme } from "@mui/material";
 
 const Layout = (props) => {
   const [mode, setMode] = useState("dark");
+  useEffect(() => {
+    const selectedTheme = localStorage.getItem("selectedTheme");
+    if (selectedTheme) {
+      setMode(selectedTheme);
+    } else {
+      setMode("dark");
+      localStorage.setItem("selectedTheme", "dark");
+    }
+  }, []);
+
   const getDesignTokens = (mode) => ({
     palette: {
       mode,
@@ -16,7 +26,7 @@ const Layout = (props) => {
             // palette values for light mode
             background: {
               default: "#F9FAFC",
-              paper: "#FFFFFF",
+              paper: "#F4FBFC",
             },
             text: {
               primary: "#000",
@@ -44,7 +54,7 @@ const Layout = (props) => {
             // palette values for dark mode
             neutral: {
               100: "#F3F4F6",
-              200: "#E5E7EB",
+              200: "#E7E7E7;",
               300: "#D1D5DB",
               400: "#9CA3AF",
               500: "#6B7280",
@@ -55,7 +65,7 @@ const Layout = (props) => {
             },
             background: {
               default: "#0B0D21",
-              paper: "#FFFFFF",
+              paper: "#161A42",
               light: "#161A42",
             },
             theme: {
