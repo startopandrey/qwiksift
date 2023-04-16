@@ -187,6 +187,7 @@ export default function Home() {
           <Image
             style={{ objectFit: "contain" }}
             src={"/logo.png"}
+            alt="img"
             width="150"
             height={70}
           ></Image>
@@ -807,6 +808,7 @@ export default function Home() {
                       objectFit: "contain",
                       padding: 10,
                     }}
+                    alt="img"
                     src="/lines.png"
                     layout="fill"
                   />
@@ -874,6 +876,7 @@ export default function Home() {
                     }}
                     src="/world.png"
                     layout="fill"
+                    alt="img"
                   />
                 </Box>
               </Box>
@@ -1022,6 +1025,7 @@ export default function Home() {
 
                   width: "100%",
                 }}
+                alt="img"
                 fill
               ></Image>
             </Box>
@@ -1047,6 +1051,7 @@ export default function Home() {
 
                   width: "100%",
                 }}
+                alt="img"
            width={40}
            height={20}
               ></Image>
@@ -1073,6 +1078,7 @@ export default function Home() {
 
                   width: "100%",
                 }}
+                alt="img"
                 fill
               ></Image>
             </Box>
@@ -1098,6 +1104,7 @@ export default function Home() {
 
                   width: "100%",
                 }}
+                alt="img"
                 fill
               ></Image>
             </Box>

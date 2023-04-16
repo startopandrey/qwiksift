@@ -5,7 +5,7 @@ import Head from "next/head";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material";
-import Header from "../Header/Header";
+
 const Layout = (props) => {
   const [mode, setMode] = useState("dark");
   const getDesignTokens = (mode) => ({
